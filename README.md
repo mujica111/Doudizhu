@@ -25,9 +25,9 @@ Developed a fixed opponent pool consisting of diverse strategies, including DouZ
 
 ### 4.1 Reinforcement Learning Against Rulebase 1
 
-Initial experiments focused on training agents from scratch against a simple rule-based opponent that consistently selected the smallest legal action.
+Initial experiments focused on training agents from scratch against a simple rule-based opponent that consistently selected the smallest legal action(91% winning percentage vs random choice agent).
 
-DQN, Bellman-based Q-learning, and Monte Carlo methods were compared to investigate their learning behavior and training stability. Monte Carlo self-play was subsequently introduced to examine whether agents could improve through interaction with copies of their own policy.
+DQN, Bellman-based Q-learning, and Monte Carlo methods were compared to investigate their learning behavior and training stability so as to determine suitable training methods. Monte Carlo self-play was subsequently introduced to examine whether agents could improve through interaction with copies of their own policy.
 
 **Figure 1 — Reinforcement Learning Experiments Against Rulebase 1**
 
