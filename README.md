@@ -20,3 +20,24 @@ Introduced strong pretrained agents such as DouZero as sources of expert demonst
 
 ### 3. Opponent Pool and Policy Selection
 Developed a fixed opponent pool consisting of diverse strategies, including DouZero and officially released variants from the DouZero team. Introduced repeated evaluation and tournament-based model selection to encourage consistent policy improvement.
+
+## Experimental Results
+
+### 4.1 Reinforcement Learning Against Rulebase 1
+
+Initial experiments focused on training agents from scratch against a simple rule-based opponent that consistently selected the smallest legal action.
+
+DQN, Bellman-based Q-learning, and Monte Carlo methods were compared to investigate their learning behavior and training stability. Monte Carlo self-play was subsequently introduced to examine whether agents could improve through interaction with copies of their own policy.
+
+**Figure 1 — Reinforcement Learning Experiments Against Rulebase 1**
+
+![figure1](image/rule_base1.png)
+
+**Key Findings**
+
+- **Learning effectiveness:** Bellman-based Q-learning and Monte Carlo methods achieved substantial improvements over the initial reward-based DQN baseline.
+- **Training instability:** Monte Carlo exhibited significant performance fluctuations, even after achieving high win rates.
+- **Self-play evaluation:** Monte Carlo self-play achieved a peak evaluation win rate of **78.8%** against Rulebase 1, but subsequent checkpoints showed substantial performance degradation.
+- **Model selection:** These experiments highlighted the importance of independent evaluation and best-checkpoint selection rather than relying on the final trained model.
+
+
