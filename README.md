@@ -44,7 +44,7 @@ DQN, Bellman-based Q-learning, and Monte Carlo methods were compared to investig
 ### 4.2 Further Reinforcement Learning Experiment Against Rulebase 2
 
 
-Following the initial experiments, Bellman-based DQN achieved approximately **80% win rate against Rulebase 1**, highlighting the importance of temporal credit assignment. Double DQN was subsequently explored to improve training stability.
+Following the initial experiments, Bellman-based DQN achieved **80.1% win rate against Rulebase 1**, highlighting the importance of temporal credit assignment. Double DQN was subsequently explored to improve training stability.
 
 However, improvements against a simple opponent eventually became less informative. A stronger benchmark, **Rulebase 2**, was introduced to evaluate whether the learned policies could handle more challenging decision-making scenarios. This opponent achieved approximately 99% win rate against random play.
 
@@ -60,7 +60,7 @@ These results revealed substantial differences between the learning approaches. 
 
 **Further Training and Optimization**
 
-Training directly against Rulebase 2 improved Monte Carlo performance to approximately 47%, while Bellman-based DQN initially reached around 55%. Subsequent improvements to state representation increased Bellman-based DQN performance from approximately 56% to 61%.
+Training directly against Rulebase 2 improved Monte Carlo performance to approximately 47%, while Bellman-based DQN initially reached around 55%. Subsequent improvements to state representation increased Bellman-based DQN performance from 56.2% to 61.2%.
 
 PPO was then introduced as an alternative policy optimization approach. Initial experiments achieved approximately 58% win rate, with later configurations reaching around 60% and exhibiting relatively stable learning behavior.
 
@@ -79,9 +79,17 @@ PPO was then introduced as an alternative policy optimization approach. Initial 
 
 Based on these experiments, **Bellman-based DQN and PPO were selected for further investigation**. Bellman-based DQN demonstrated strong performance improvements, particularly through state representation refinement, while PPO offered a relatively stable policy optimization framework.
 
-The next stage introduced DouZero as a substantially stronger opponent. Initial evaluation of the best PPO agent achieved only approximately **26% win rate**, exposing a significant gap between performance against rule-based opponents and more competitive pretrained agents.
+The next stage introduced DouZero as a substantially stronger opponent. Initial evaluation of the best PPO agent achieved only **26.0% win rate**, exposing a significant gap between performance against rule-based opponents and more competitive trained agents.
 
 This motivated subsequent experiments with expert demonstrations, behavioral cloning, and reinforcement learning guided by pretrained policies.
+
+**Figure 3. Training Dynamics of Bellman-based DQN and PPO Against the Official Pretrained DouZero Agent.**
+
+Both agents were trained against the official pretrained DouZero model through a custom adapter interface. Bellman-based DQN exhibited substantial fluctuations throughout approximately 300,000 training episodes, without achieving sustained improvement. In contrast, PPO demonstrated a more progressive learning trajectory, reaching a relatively stable training win rate of approximately 30–35% within 150,000 episodes.
+
+These observations motivated further investigation into expert-guided policy learning, particularly the integration of Behavioral Cloning (BC) with PPO.
+
+
 
 
 
