@@ -134,3 +134,44 @@ These results suggested that maintaining a reference to the BC policy was import
 
 
 
+### 3.3 Historical Opponent Pool and Training Strategy
+
+To further improve policy robustness, an initial self-play-based historical model pool was investigated. The approach first generated five models using PPO+BC+KL, then trained them through self-play. A model trained in the landlord position was selected to play against two self-play models, and high-performing checkpoints were retained for subsequent training in the farmer position.
+
+However, this approach revealed a role-specific policy mismatch. Models trained primarily as landlords did not necessarily learn effective farmer strategies when reused as historical opponents. This differed from DouZero, which provides separate specialized models for landlord and farmer positions. As a result, the self-play-based pool failed to provide consistently useful training signals.
+
+To address this issue, the training framework was changed to use a fixed opponent pool with a larger number of sampled games. Three additional opponents based on DouZero were introduced: **SL**, **ADP**, and **WP**. During training, the agent played as the landlord against randomly sampled farmer opponents from the fixed pool. Each training round consisted of 5,000 games using PPO+KL+RL, with evaluation every 500 batches. The best checkpoint was retained based on evaluation performance.
+
+The candidate checkpoint was then evaluated against each of the four opponents over 1,000 games. Its average win rate was compared with the lowest-performing model in the existing five-model best pool. A performance improvement of at least **0.5 percentage points** was used as the initial replacement threshold. The candidate would replace the weakest model if this criterion was met, and a model from the updated pool would then be sampled for the next training round.
+
+**Opponent Pool Evaluation**
+
+| Opponent | Win Rate | Description |
+|---|---:|---|
+| DouZero | 55% | Official pretrained DouZero agent |
+| ADP | 53% | Conservative strategy focused on average score difference |
+| WP | 44% | Strategy focused on winning percentage |
+| SL | 65% | Supervised model based on human decisions |
+
+Increasing the number of evaluation games to reduce random variance, and extending each training round to more than 20,000 games. The longer training schedule was motivated by observations that the KL-constrained BC+PPO training curve often reached its peak after approximately 20,000 games.
+
+The updated opponent pool achieved the following evaluation results:
+
+| Opponent | Win Rate |
+|---|---:|
+| DouZero | 56% |
+| ADP | 54% |
+| WP | 44% |
+| SL | 65% |
+
+details are shown by figure6:
+![Figure6](image/figure5.png)]
+
+
+
+Despite these adjustments, the new historical pool did not consistently produce models that outperformed the original checkpoints. Although opponent-pool updates provided marginal improvements, the overall gains remained limited. These experiments suggest that the effectiveness of historical opponent pools is fundamentally constrained by the underlying policy optimization method. Building a more diverse opponent pool alone is insufficient; **how to train a stronger Dou Dizhu policy effectively remains the central challenge.**
+
+
+
+
+
