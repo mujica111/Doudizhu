@@ -67,7 +67,7 @@ Motivated by the training instability observed in Monte Carlo and DQN experiment
 
 **Figure 2 — State Representation and PPO Hyperparameter Experiments**
 
-![figure2](image/figure2.png)]
+![figure2](image/figure2.png)
 
 **Key Findings**
 
@@ -164,7 +164,7 @@ The updated opponent pool achieved the following evaluation results:
 
 Details are shown in Figure 6:
 
-![Figure6](image/figure6.png)]
+![Figure6](image/figure6.png)
 
 Despite these adjustments, the new historical pool did not consistently produce models that outperformed the original checkpoints. Although opponent-pool updates provided marginal improvements, the overall gains remained limited. These experiments suggest that the effectiveness of historical opponent pools is fundamentally constrained by the underlying policy optimization method. Building a more diverse opponent pool alone is insufficient; **how to train a stronger Dou Dizhu policy effectively remains the central challenge.**
 
