@@ -59,10 +59,9 @@ However, improvements against a simple opponent eventually became less informati
 These results revealed substantial differences between the learning approaches. Bellman-based DQN demonstrated stronger initial performance, while Monte Carlo methods struggled to achieve comparable results.
 
 **Further Training and Optimization**
-
 Training directly against Rulebase 2 improved Monte Carlo performance to approximately 47%, while Bellman-based DQN initially reached around 55%. Subsequent improvements to state representation increased Bellman-based DQN performance from 56.2% to 61.2%.
 
-PPO was then introduced as an alternative policy optimization approach. Initial experiments achieved approximately 58% win rate, with later configurations reaching around 60% and exhibiting relatively stable learning behavior.
+Motivated by the training instability observed in Monte Carlo and DQN experiments, PPO was introduced as an alternative policy optimization approach to investigate more stable learning behavior. Initial experiments achieved approximately 58% win rate, with later configurations reaching around 60% and exhibiting relatively stable learning behavior.
 
 **Figure 2 — State Representation and PPO Hyperparameter Experiments**
 
@@ -85,9 +84,14 @@ This motivated subsequent experiments with expert demonstrations, behavioral clo
 
 **Figure 3. Training Dynamics of Bellman-based DQN and PPO Against the Official Pretrained DouZero Agent.**
 
+！[figure3](image/figure3.png)
+
 Both agents were trained against the official pretrained DouZero model through a custom adapter interface. Bellman-based DQN exhibited substantial fluctuations throughout approximately 300,000 training episodes, without achieving sustained improvement. In contrast, PPO demonstrated a more progressive learning trajectory, reaching a relatively stable training win rate of approximately 30–35% within 150,000 episodes.
 
 These observations motivated further investigation into expert-guided policy learning, particularly the integration of Behavioral Cloning (BC) with PPO.
+
+
+![Figure4](image/figure4.png)]
 
 
 
