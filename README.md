@@ -120,7 +120,7 @@ Several BC+RL configurations were investigated, using PPO as the policy optimiza
 
 **Figure 5 — Comparison of BC-guided Reinforcement Learning Strategies**
 
-![Figure5](image/figure5.png)]
+![Figure5](image/figure5.png)
 
 **Key Findings**
 
