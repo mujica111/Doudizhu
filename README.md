@@ -86,7 +86,7 @@ This motivated subsequent experiments with expert demonstrations, behavioral clo
 
 **Figure 3 — Training Dynamics of Bellman-based DQN and PPO Against the Official Pretrained DouZero Agent**
 
-！[figure3](image/figure3.png)
+![figure3](image/figure3.png)
 
 DouZero is a widely recognized open-source Dou Dizhu AI, introduced at ICML 2021. It achieved state-of-the-art performance among contemporary Dou Dizhu agents, ranking first on the Botzone leaderboard among 344 AI agents, making it a strong benchmark for evaluating learned policies.
 
