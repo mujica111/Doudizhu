@@ -1,4 +1,4 @@
-## Overview
+# Overview
 
 A from-scratch exploration of how to effectively train a competitive Dou Dizhu agent. Starting with reinforcement learning from basic baselines, the project progressively explores expert-guided training, leveraging strong open-source agents such as DouZero as behavioral references to improve policy learning and overcome the limitations of training from scratch.
 
@@ -7,27 +7,30 @@ A from-scratch exploration of how to effectively train a competitive Dou Dizhu a
 - **Custom Game Environment:** Built a Dou Dizhu environment with efficient legal-action generation through card-pattern matching, significantly improving simulation throughput.
 - **Reinforcement Learning:** Explored and compared different training approaches, with iterative improvements to reward design, state representation, and policy optimization.
 - **Expert-Guided Learning:** Incorporated strong pretrained agents such as DouZero as expert references, exploring ways to combine expert knowledge with reinforcement learning.
-- **DouZero Integration:** Developed an adapter interface connecting the custom game environment with DouZero, enabling pretrained DouZero agents to participate in games while preserving the original agent's decision-making behavior and playing strength as closely as possible.
+- **DouZero Integration:** Developed an adapter interface connecting the custom game environment with DouZero, enabling pretrained DouZero agents to participate in games while preserving their original decision-making behavior and playing strength as closely as possible.
 - **Benchmark & Evaluation:** Developed progressively stronger rule-based benchmarks and a fixed opponent pool to evaluate policy improvements and identify training limitations.
 
 ## Training Methodology
 
 ### 1. Reinforcement Learning from Scratch
+
 Established initial training baselines using DQN, Monte Carlo methods, and PPO. Experimented with reward design, state representation, and temporal credit assignment to improve learning performance.
 
 ### 2. Expert-Guided Policy Learning
+
 Introduced strong pretrained agents such as DouZero as sources of expert demonstrations. Explored combining expert-guided policy learning with reinforcement learning to overcome the limitations of training against weaker or overly strong opponents.
 
 ### 3. Opponent Pool and Policy Selection
+
 Developed a fixed opponent pool consisting of diverse strategies, including DouZero and officially released variants from the DouZero team. Introduced repeated evaluation and tournament-based model selection to encourage consistent policy improvement.
 
 ## Experimental Results
 
 ### 4.1 Reinforcement Learning Against Rulebase 1
 
-Initial experiments focused on training agents from scratch against a simple rule-based opponent that consistently selected the smallest legal action(91% winning percentage vs random choice agent).
+Initial experiments focused on training agents from scratch against a simple rule-based opponent that consistently selected the smallest legal action (91% win rate against the random-choice agent).
 
-DQN, Bellman-based Q-learning, and Monte Carlo methods were compared to investigate their learning behavior and training stability so as to determine suitable training methods. Monte Carlo self-play was subsequently introduced to examine whether agents could improve through interaction with copies of their own policy.
+DQN, Bellman-based Q-learning, and Monte Carlo methods were compared to investigate their learning behavior and training stability, with the goal of identifying suitable training approaches. Monte Carlo self-play was subsequently introduced to examine whether agents could improve through interaction with copies of their own policy.
 
 **Figure 1 — Reinforcement Learning Experiments Against Rulebase 1**
 
@@ -40,11 +43,9 @@ DQN, Bellman-based Q-learning, and Monte Carlo methods were compared to investig
 - **Self-play evaluation:** Monte Carlo self-play achieved a peak evaluation win rate of **78.8%** against Rulebase 1, but subsequent checkpoints showed substantial performance degradation.
 - **Model selection:** These experiments highlighted the importance of independent evaluation and best-checkpoint selection rather than relying on the final trained model.
 
+### 4.2 Further Reinforcement Learning Experiments Against Rulebase 2
 
-### 4.2 Further Reinforcement Learning Experiment Against Rulebase 2
-
-
-Following the initial experiments, Bellman-based DQN achieved **80.1% win rate against Rulebase 1**, highlighting the importance of temporal credit assignment. Double DQN was subsequently explored to improve training stability.
+Following the initial experiments, Bellman-based DQN achieved an **80.1% win rate against Rulebase 1**, highlighting the importance of temporal credit assignment. Double DQN was subsequently explored to improve training stability.
 
 However, improvements against a simple opponent eventually became less informative. A stronger benchmark, **Rulebase 2**, was introduced to evaluate whether the learned policies could handle more challenging decision-making scenarios. This opponent achieved approximately 99% win rate against random play.
 
@@ -59,6 +60,7 @@ However, improvements against a simple opponent eventually became less informati
 These results revealed substantial differences between the learning approaches. Bellman-based DQN demonstrated stronger initial performance, while Monte Carlo methods struggled to achieve comparable results.
 
 **Further Training and Optimization**
+
 Training directly against Rulebase 2 improved Monte Carlo performance to approximately 47%, while Bellman-based DQN initially reached around 55%. Subsequent improvements to state representation increased Bellman-based DQN performance from 56.2% to 61.2%.
 
 Motivated by the training instability observed in Monte Carlo and DQN experiments, PPO was introduced as an alternative policy optimization approach to investigate more stable learning behavior. Initial experiments achieved approximately 58% win rate, with later configurations reaching around 60% and exhibiting relatively stable learning behavior.
@@ -78,28 +80,27 @@ Motivated by the training instability observed in Monte Carlo and DQN experiment
 
 Based on these experiments, **Bellman-based DQN and PPO were selected for further investigation**. Bellman-based DQN demonstrated strong performance improvements, particularly through state representation refinement, while PPO offered a relatively stable policy optimization framework.
 
-The next stage introduced DouZero as a substantially stronger opponent. Initial evaluation of the best PPO agent achieved only **26.0% win rate**, exposing a significant gap between performance against rule-based opponents and more competitive trained agents.
+The next stage introduced DouZero as a substantially stronger opponent. Initial evaluation of the best PPO agent achieved only a **26.0% win rate**, exposing a significant gap between performance against rule-based opponents and more competitive trained agents.
 
-This motivated subsequent experiments with expert demonstrations, behavioral cloning, and reinforcement learning guided by pretrained policies, DouZero. 
+This motivated subsequent experiments with expert demonstrations, behavioral cloning, and reinforcement learning guided by pretrained policies.
 
-**Figure 3. Training Dynamics of Bellman-based DQN and PPO Against the Official Pretrained DouZero Agent.**
+**Figure 3 — Training Dynamics of Bellman-based DQN and PPO Against the Official Pretrained DouZero Agent**
 
 ！[figure3](image/figure3.png)
 
 DouZero is a widely recognized open-source Dou Dizhu AI, introduced at ICML 2021. It achieved state-of-the-art performance among contemporary Dou Dizhu agents, ranking first on the Botzone leaderboard among 344 AI agents, making it a strong benchmark for evaluating learned policies.
 
-
 Both agents were trained against the official pretrained DouZero model through a custom adapter interface. Bellman-based DQN exhibited substantial fluctuations throughout approximately 300,000 training episodes, without achieving sustained improvement. In contrast, PPO demonstrated a more progressive learning trajectory, reaching a relatively stable training win rate of approximately 30–35% within 150,000 episodes.
 
 These observations motivated further investigation into expert-guided policy learning, particularly the integration of Behavioral Cloning (BC) with PPO.
 
-**Figure4. Behavior Cloning from DouZero**
+**Figure 4 — Behavior Cloning from DouZero**
 
 ![Figure4](image/figure4.png)
 
-As an initial attempt at expert-guided learning, Behavior Cloning (BC) was introduced using gameplay data generated by the pre-trained DouZero agent.
+As an initial attempt at expert-guided learning, Behavioral Cloning (BC) was introduced using gameplay data generated by the pretrained DouZero agent.
 
-Figure4 showed that BC substantially improved performance against the previous rule-based benchmark, demonstrating the value of expert demonstrations for policy initialization.
+Figure 4 shows that BC substantially improved performance against the previous rule-based benchmark, demonstrating the value of expert demonstrations for policy initialization.
 
 **Key Findings**
 
@@ -109,13 +110,11 @@ Figure4 showed that BC substantially improved performance against the previous r
 
 These experiments established BC as a useful initialization approach for subsequent reinforcement learning. However, the diminishing returns from simply increasing the dataset size or training iterations motivated further investigation into combining expert-guided learning with policy optimization.
 
-**Figure 5**
+### 4.3 Combining Behavior Cloning with Reinforcement Learning
 
-### 3.2 Combining Behavior Cloning with Reinforcement Learning
+Although Behavioral Cloning provided a strong policy initialization, simply increasing the amount of expert data or training iterations led to diminishing returns. This motivated further exploration of combining expert-guided learning with reinforcement learning.
 
-Although Behavior Cloning provided a strong policy initialization, simply increasing the amount of expert data or training iterations led to diminishing returns. This motivated further exploration of combining expert-guided learning with reinforcement learning.
-
-Based on the previous BC experiments, the subsequent BC+RL experiments used a policy pretrained on **500,000 expert games for 200 epochs**, which provided a stronger initialization for further reinforcement learning.
+Based on the previous BC experiments, the subsequent BC+RL experiments used a policy pretrained on **500,000 expert games for 200 epochs**, providing a stronger initialization for further reinforcement learning.
 
 Several BC+RL configurations were investigated, using PPO as the policy optimization framework and exploring different ways to incorporate the pretrained BC policy.
 
@@ -130,17 +129,15 @@ Several BC+RL configurations were investigated, using PPO as the policy optimiza
 - **Improved training behavior:** Compared with alternative BC+RL configurations, the KL-constrained approach demonstrated the most effective improvement in the experiments.
 - **Expert knowledge retention:** KL regularization provided a balance between learning from reinforcement signals and retaining the useful behavior acquired through expert demonstrations.
 
-These results suggested that maintaining a reference to the BC policy was important for effective policy optimization against strong opponents. The final BC+PPO+KL configuration achieved a win rate of **55% against the official pre-trained DouZero agent**, improving upon the initial pure PPO baseline of 26% and original BC model of 51%.
+These results suggested that maintaining a reference to the BC policy was important for effective policy optimization against strong opponents. The final BC+PPO+KL configuration achieved a win rate of **55% against the official pretrained DouZero agent**, improving upon the initial pure PPO baseline of 26% and the original BC model of 51%.
 
-
-
-### 3.3 Historical Opponent Pool and Training Strategy
+### 4.4 Historical Opponent Pool and Training Strategy
 
 To further improve policy robustness, an initial self-play-based historical model pool was investigated. The approach first generated five models using PPO+BC+KL, then trained them through self-play. A model trained in the landlord position was selected to play against two self-play models, and high-performing checkpoints were retained for subsequent training in the farmer position.
 
 However, this approach revealed a role-specific policy mismatch. Models trained primarily as landlords did not necessarily learn effective farmer strategies when reused as historical opponents. This differed from DouZero, which provides separate specialized models for landlord and farmer positions. As a result, the self-play-based pool failed to provide consistently useful training signals.
 
-To address this issue, the training framework was changed to use a fixed opponent pool with a larger number of sampled games. Three additional opponents based on DouZero were introduced: **SL**, **ADP**, and **WP**. During training, the agent played as the landlord against randomly sampled farmer opponents from the fixed pool. Each training round consisted of 5,000 games using PPO+KL+RL, with evaluation every 500 batches. The best checkpoint was retained based on evaluation performance.
+To address this issue, the training framework was changed to use a fixed opponent pool with a larger number of sampled games. Three additional opponents based on DouZero were introduced: **SL**, **ADP**, and **WP**. During training, the agent played as the landlord against randomly sampled farmer opponents from the fixed pool. Each initial training round consisted of 5,000 games using PPO+KL+RL, with evaluation every 500 batches. The best checkpoint was retained based on evaluation performance.
 
 The candidate checkpoint was then evaluated against each of the four opponents over 1,000 games. Its average win rate was compared with the lowest-performing model in the existing five-model best pool. A performance improvement of at least **0.5 percentage points** was used as the initial replacement threshold. The candidate would replace the weakest model if this criterion was met, and a model from the updated pool would then be sampled for the next training round.
 
@@ -153,7 +150,7 @@ The candidate checkpoint was then evaluated against each of the four opponents o
 | WP | 44% | Strategy focused on winning percentage |
 | SL | 65% | Supervised model based on human decisions |
 
-Increasing the number of evaluation games to reduce random variance, and extending each training round to more than 20,000 games. The longer training schedule was motivated by observations that the KL-constrained BC+PPO training curve often reached its peak after approximately 20,000 games.
+In subsequent experiments, the replacement threshold was lowered from 0.5 to 0.4 percentage points, and the number of evaluation games was increased to reduce random variance. The training schedule was also extended to more than 20,000 games per round. This longer schedule was motivated by observations that the KL-constrained BC+PPO training curve often reached its peak after approximately 20,000 games.
 
 The updated opponent pool achieved the following evaluation results:
 
@@ -163,15 +160,48 @@ The updated opponent pool achieved the following evaluation results:
 | ADP | 54% |
 | WP | 44% |
 | SL | 65% |
+| Rulebase | 87% |
 
-details are shown by figure6:
-![Figure6](image/figure5.png)]
+Details are shown in Figure 6:
 
-
+![Figure6](image/figure6.png)]
 
 Despite these adjustments, the new historical pool did not consistently produce models that outperformed the original checkpoints. Although opponent-pool updates provided marginal improvements, the overall gains remained limited. These experiments suggest that the effectiveness of historical opponent pools is fundamentally constrained by the underlying policy optimization method. Building a more diverse opponent pool alone is insufficient; **how to train a stronger Dou Dizhu policy effectively remains the central challenge.**
 
 
+## DouZero Adapter
+
+Developed an adapter connecting the custom game environment with pretrained DouZero agents.
+
+- **State & Action Mapping:** Converted card representations, game states, and action histories into DouZero-compatible `InfoSet` objects, with bidirectional action mapping.
+- **Model Integration:** Integrated pretrained `DeepAgent` checkpoints for landlord and farmer positions, with model compatibility checks and action legality validation.
+
+This adapter enabled direct gameplay against DouZero and expert demonstration collection for subsequent Behavioral Cloning and reinforcement learning.
+
+## Limitations & Future Work
+
+### 1. Computational Constraints
+Limited computing resources restricted the scale of experiments. BC training with 500,000 expert games introduced significant overhead, while PPO self-play required approximately 10 hours for 10 batches of 10,000 games. The overall training process took nearly one week, limiting further experimentation.
+
+**Future Work:** Improve simulation and training efficiency and explore larger-scale experiments with more computing resources.
+
+### 2. Environment Compatibility and Evaluation Reliability
+The custom adapter does not perfectly reproduce DouZero's original execution environment, potentially introducing significant evaluation bias. In experiments, the same agent achieved a **95.7% win rate against DouZero in the custom environment, but only 85.3% in DouZero's original environment**. This 10-percentage-point gap suggests that environment differences may substantially affect evaluation results, making direct comparisons potentially unreliable.
+
+**Future Work:** Conduct final evaluations directly within DouZero's original environment and further investigate discrepancies between the two environments.
+
+### 3. Limitations of Learning Algorithms
+Relatively simple RL algorithms achieved partial improvements but struggled against stronger opponents. Training from scratch remained challenging, while Behavioral Cloning provided a much stronger initialization.
+
+**Future Work:** Explore more advanced RL algorithms, exploration strategies, and self-play frameworks to reduce dependence on expert demonstrations.
 
 
+## Acknowledgements
+ 
+This project uses the open-source [DouZero](https://github.com/kwai/DouZero) framework developed by the AI Platform at Kuaishou. I use its pretrained agents and adapt its inference interface to our custom game environment for benchmarking and expert demonstration collection.
 
+I gratefully acknowledge the authors and contributors of DouZero for making their work publicly available.
+
+**Reference:**
+
+Zha, D., et al. *DouZero: Mastering DouDizhu with Self-Play Deep Reinforcement Learning.* Proceedings of the 38th International Conference on Machine Learning (ICML), 2021.
