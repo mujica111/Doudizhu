@@ -111,6 +111,9 @@ def load_douzero_agent(position, model_path):
     actual_size = _checkpoint_input_size(path)
     expected_size = EXPECTED_INPUT_SIZE[position]
 
+    if actual_size != expected_size:
+        raise ValueError("size！")
+
     return DeepAgent(position, str(path))
 
 
